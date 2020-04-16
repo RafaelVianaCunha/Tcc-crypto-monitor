@@ -1,0 +1,112 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "CryptoMonitor/1.0.0": {
+        "dependencies": {
+          "Bitfinex.Client.Websocket": "4.1.106",
+          "Newtonsoft.Json": "12.0.3",
+          "Websocket.Client": "4.2.3",
+          "System.Reactive.Reference": "4.3.0.0"
+        },
+        "runtime": {
+          "CryptoMonitor.dll": {}
+        }
+      },
+      "Bitfinex.Client.Websocket/4.1.106": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "System.Reactive": "4.3.2",
+          "Websocket.Client": "4.2.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Bitfinex.Client.Websocket.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "Newtonsoft.Json/12.0.3": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
+        }
+      },
+      "System.Reactive/4.3.2": {},
+      "System.Threading.Channels/4.7.0": {},
+      "Websocket.Client/4.2.3": {
+        "dependencies": {
+          "System.Reactive": "4.3.2",
+          "System.Threading.Channels": "4.7.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Websocket.Client.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
+          }
+        }
+      },
+      "System.Reactive.Reference/4.3.0.0": {
+        "runtime": {
+          "System.Reactive.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.2.55399"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CryptoMonitor/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Bitfinex.Client.Websocket/4.1.106": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TzX/1QzC3f/gAUyhnCQdffGVKpNFFvmP/ikgKXwSFAe2OHSq4rFCf9pTYvGHdUxaCuJSZXcdgwWASvy2oIesRA==",
+      "path": "bitfinex.client.websocket/4.1.106",
+      "hashPath": "bitfinex.client.websocket.4.1.106.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
+    },
+    "System.Reactive/4.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WhGkScPWxw2pp7UwRW8M1OvYZ3WUDPC2wJ0aiuaB4KRD3bt4wLkgHgYnOUu87WRhsurvv5LN0E63iWOEza2o8g==",
+      "path": "system.reactive/4.3.2",
+      "hashPath": "system.reactive.4.3.2.nupkg.sha512"
+    },
+    "System.Threading.Channels/4.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-gdOOXBhtt2UpTxYJm1DRmoqNfYg5ypvhzhVt0vxKhzxXFjS81r8yIOSFsJYLRa1Jc14GBAqCnjxJstO3zBN7gg==",
+      "path": "system.threading.channels/4.7.0",
+      "hashPath": "system.threading.channels.4.7.0.nupkg.sha512"
+    },
+    "Websocket.Client/4.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7IKizfhXfZHXuDx5igZ0+yvssYC9Cxaxu//zNrJDoZYyAAEsBDrbF6uHPUGxV2q86QExfcf4tTPAN4XfMh09kw==",
+      "path": "websocket.client/4.2.3",
+      "hashPath": "websocket.client.4.2.3.nupkg.sha512"
+    },
+    "System.Reactive.Reference/4.3.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj": {}
+  },
+  "projects": {
+    "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj",
+        "projectName": "CryptoMonitor",
+        "projectPath": "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj",
+        "packagesPath": "/Users/luiscgomes/.nuget/packages/",
+        "outputPath": "/Users/luiscgomes/dev/tcc/CryptoMonitor/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/luiscgomes/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Bitfinex.Client.Websocket": {
+              "target": "Package",
+              "version": "[4.1.106, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
+            "Websocket.Client": {
+              "target": "Package",
+              "version": "[4.2.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

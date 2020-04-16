@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Fc5SkrmP8FKCPI2izZiwUBpZL7o39ELOrTMFYfXLiqrdFCz4ZhLi+YQp1+P7HHOIlNp2v/fgcm/WIbs2xJuD6w==",
+  "success": true,
+  "projectFilePath": "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj",
+  "expectedPackageFiles": [
+    "/Users/luiscgomes/.nuget/packages/bitfinex.client.websocket/4.1.106/bitfinex.client.websocket.4.1.106.nupkg.sha512",
+    "/Users/luiscgomes/.nuget/packages/newtonsoft.json/12.0.3/newtonsoft.json.12.0.3.nupkg.sha512",
+    "/Users/luiscgomes/.nuget/packages/system.reactive/4.3.2/system.reactive.4.3.2.nupkg.sha512",
+    "/Users/luiscgomes/.nuget/packages/system.threading.channels/4.7.0/system.threading.channels.4.7.0.nupkg.sha512",
+    "/Users/luiscgomes/.nuget/packages/websocket.client/4.2.3/websocket.client.4.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
