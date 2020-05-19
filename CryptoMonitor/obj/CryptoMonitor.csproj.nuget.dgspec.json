@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj": {}
+    "/Users/luiscgomes/dev/tcc/crypto-monitor/CryptoMonitor/CryptoMonitor.csproj": {}
   },
   "projects": {
-    "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj": {
+    "/Users/luiscgomes/dev/tcc/crypto-monitor/CryptoMonitor/CryptoMonitor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj",
+        "projectUniqueName": "/Users/luiscgomes/dev/tcc/crypto-monitor/CryptoMonitor/CryptoMonitor.csproj",
         "projectName": "CryptoMonitor",
-        "projectPath": "/Users/luiscgomes/dev/tcc/CryptoMonitor/CryptoMonitor.csproj",
+        "projectPath": "/Users/luiscgomes/dev/tcc/crypto-monitor/CryptoMonitor/CryptoMonitor.csproj",
         "packagesPath": "/Users/luiscgomes/.nuget/packages/",
-        "outputPath": "/Users/luiscgomes/dev/tcc/CryptoMonitor/obj/",
+        "outputPath": "/Users/luiscgomes/dev/tcc/crypto-monitor/CryptoMonitor/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/luiscgomes/.nuget/NuGet/NuGet.Config"
@@ -36,17 +36,21 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "Bitfinex.Client.Websocket": {
+            "Binance.Net": {
               "target": "Package",
-              "version": "[4.1.106, )"
+              "version": "[5.0.3, )"
+            },
+            "Bittrex.Net": {
+              "target": "Package",
+              "version": "[4.0.7, )"
+            },
+            "CryptoExchange.Net": {
+              "target": "Package",
+              "version": "[3.0.6, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[12.0.3, )"
-            },
-            "Websocket.Client": {
-              "target": "Package",
-              "version": "[4.2.3, )"
             }
           },
           "imports": [

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Bitfinex.Client.Websocket;
-using Bitfinex.Client.Websocket.Client;
-using Bitfinex.Client.Websocket.Requests.Subscriptions;
-using Bitfinex.Client.Websocket.Websockets;
-using Websocket.Client;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+using Binance.Net;
+using Bittrex.Net;
+using CryptoExchange.Net.Sockets;
+
 
 namespace CryptoMonitor
 {
@@ -59,36 +56,62 @@ namespace CryptoMonitor
             //     exitEvent.WaitOne();
             // };
 
-            // Console.ReadKey();
-            // Console.WriteLine("Hello World!");
+            // var task1 = Task.Run(() => {
+            //     using(var client = new BinanceSocketClient()) {
+            //     var successSymbols = client.SubscribeToAllSymbolTickerUpdates((data) =>
+            //     {
+            //         foreach (var item in data)
+            //         {
+            //             Console.WriteLine("Binance " + item.BestBidPrice);
+            //         }
+            //     });
+            // }});
 
-            var calculator = new Calculator(97.0M);
-
-            var task1 = Task.Run(() => {
-                for (var i = 0; i < 100; i++)
-                {
-                    var x = new Random().Next(95, 101);
-                    calculator.CalculateForNewValue(x, "Binance");
-                }
+            var socketClient = new BittrexSocketClient();
+            socketClient.SubscribeToOrderBookUpdates("BTC-ETH", (data) => {
+                    foreach(var item in data.Buys) {
+                        Console.WriteLine(item.Price);
+                    }
             });
 
-            var task2 = Task.Run(() => {
-                for (var i = 0; i < 100; i++)
-                {
-                    var x = new Random().Next(95, 101);
-                    calculator.CalculateForNewValue(x, "Bitfinex");
-                }
-            });
+            // socketClient.SubscribeToSymbolSummariesUpdate((data) => {
+            //     foreach(var item in data) {
+            //         Console.WriteLine(item.High);
+            //     }
+            // });
 
-            var task3 = Task.Run(() => {
-                for (var i = 0; i < 100; i++)
-                {
-                    var x = new Random().Next(95, 101);
-                    calculator.CalculateForNewValue(x, "Bybit");
-                }
-            });
+            Console.ReadLine();
 
-            await Task.WhenAll(task1, task2, task3);
+            Console.ReadKey();
+            Console.WriteLine("Hello World!");
+
+            // var calculator = new Calculator(97.0M);
+
+            // var task1 = Task.Run(() => {
+            //     for (var i = 0; i < 100; i++)
+            //     {
+            //         var x = new Random().Next(95, 101);
+            //         calculator.CalculateForNewValue(x, "Binance");
+            //     }
+            // });
+
+            // var task2 = Task.Run(() => {
+            //     for (var i = 0; i < 100; i++)
+            //     {
+            //         var x = new Random().Next(95, 101);
+            //         calculator.CalculateForNewValue(x, "Bitfinex");
+            //     }
+            // });
+
+            // var task3 = Task.Run(() => {
+            //     for (var i = 0; i < 100; i++)
+            //     {
+            //         var x = new Random().Next(95, 101);
+            //         calculator.CalculateForNewValue(x, "Bybit");
+            //     }
+            // });
+
+            // await Task.WhenAll(task1, task2, task3);
         }
     }
 }
