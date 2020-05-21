@@ -29,7 +29,7 @@ namespace CryptoMonitor.Services
                 {
                     Console.WriteLine(JsonConvert.SerializeObject(coin));
 
-                    var median = PriceCalculator.CalculateMedianForNewCoinValue(coin.Amount, c.Exchange);
+                    var median = PriceCalculator.CalculateMedianForNewCoinValue(coin.Amount, coin.Exchange);
 
                     if (StopLimit >= median)
                     {

@@ -10,6 +10,7 @@ using CryptoMonitor.Services;
 using BinanceExchangeClient = CryptoMonitor.Clients.BinanceExchangeClient;
 using Bittrex.Net;
 using BittrexExchangeClient = CryptoMonitor.Clients.BittrexExchangeClient;
+using Bitfinex.Net;
 
 namespace CryptoMonitor
 {
@@ -19,7 +20,8 @@ namespace CryptoMonitor
         {
             var stopLimitProcessor = new StopLimitProcessor(new List<IExchangeClient> {
                 new BinanceExchangeClient(new BinanceSocketClient()),
-                new BittrexExchangeClient(new BittrexSocketClient())
+                new BittrexExchangeClient(new BittrexSocketClient()),
+                new BitfinexExchangeClient(new BitfinexSocketClient())
             }, new PriceCalculator());
 
             await stopLimitProcessor.Process();

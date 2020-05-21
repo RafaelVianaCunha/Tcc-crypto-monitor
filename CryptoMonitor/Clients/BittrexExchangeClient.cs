@@ -24,7 +24,7 @@ namespace CryptoMonitor.Clients
 
             return BittrexSocketClient.SubscribeToOrderBookUpdatesAsync(bittexSymbol, (data) =>
             {
-                var lastPrice = data.Sells
+                var lastPrice = data.Buys
                     .Select(s => s.Price)
                     .OrderByDescending(x => x)
                     .First();
