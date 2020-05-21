@@ -20,7 +20,7 @@ namespace CryptoMonitor
             var stopLimitProcessor = new StopLimitProcessor(new List<IExchangeClient> {
                 new BinanceExchangeClient(new BinanceSocketClient()),
                 new BittrexExchangeClient(new BittrexSocketClient())
-            });
+            }, new PriceCalculator());
 
             await stopLimitProcessor.Process();
 

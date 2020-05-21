@@ -2,27 +2,26 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using CryptoMonitor.Enums;
 
-namespace CryptoMonitor {
-    public class Calculator {
-        public IDictionary<string, decimal> values { get; }
-        public decimal StopLimit { get; }
+namespace CryptoMonitor
+{
+    public class PriceCalculator
+    {
+        public IDictionary<Exchange, decimal> values { get; }
 
-        public Calculator(decimal stopLimit) 
+        public PriceCalculator()
         {
-            StopLimit = stopLimit;
-            values = new ConcurrentDictionary<string, decimal>();
+            values = new ConcurrentDictionary<Exchange, decimal>();
         }
 
-        public void CalculateMedianForNewCoinValue(decimal newValue, string exchange) 
+        public decimal CalculateMedianForNewCoinValue(decimal newValue, Exchange exchange)
         {
-            Console.WriteLine($"Exchange {exchange} Valor: {newValue}");
-
-            if (values.TryGetValue(exchange, out _))
+           if (values.TryGetValue(exchange, out _))
             {
                 values[exchange] = newValue;
-            } 
-            else 
+            }
+            else
             {
                 values.Add(exchange, newValue);
             }
@@ -31,9 +30,7 @@ namespace CryptoMonitor {
 
             Console.WriteLine("Mediana " + median);
 
-            if (StopLimit >= median) {
-                Console.WriteLine("Tem que vender");
-            }
+            return median;
         }
 
         public decimal GetMedian(IList<decimal> numbers)
@@ -51,7 +48,9 @@ namespace CryptoMonitor {
                 var num2 = sortedNumbers.ElementAt(halfIndex - 1);
 
                 median = (num1 + num2) / 2;
-            } else {
+            }
+            else
+            {
                 median = sortedNumbers.ElementAt(halfIndex);
             }
 

@@ -11,9 +11,14 @@ namespace CryptoMonitor.Services
     {
         public IReadOnlyCollection<IExchangeClient> ExchangeClients { get; }
 
-        public StopLimitProcessor(IReadOnlyCollection<IExchangeClient> exchangeClients)
+        public PriceCalculator PriceCalculator { get; }
+
+        public decimal StopLimit => 9500M;
+
+        public StopLimitProcessor(IReadOnlyCollection<IExchangeClient> exchangeClients, PriceCalculator priceCalculator)
         {
             ExchangeClients = exchangeClients;
+            PriceCalculator = priceCalculator;
         }
 
         public Task Process()
@@ -23,6 +28,13 @@ namespace CryptoMonitor.Services
                 c.ConsumeCoinValue("BTC-USD", (coin) =>
                 {
                     Console.WriteLine(JsonConvert.SerializeObject(coin));
+
+                    var median = PriceCalculator.CalculateMedianForNewCoinValue(coin.Amount, c.Exchange);
+
+                    if (StopLimit >= median)
+                    {
+                        Console.WriteLine("Tem que vender");
+                    }
                 })
             );
 
