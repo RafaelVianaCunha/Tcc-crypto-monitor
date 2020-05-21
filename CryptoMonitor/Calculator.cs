@@ -14,7 +14,7 @@ namespace CryptoMonitor {
             values = new ConcurrentDictionary<string, decimal>();
         }
 
-        public void CalculateForNewValue(decimal newValue, string exchange) 
+        public void CalculateMedianForNewCoinValue(decimal newValue, string exchange) 
         {
             Console.WriteLine($"Exchange {exchange} Valor: {newValue}");
 

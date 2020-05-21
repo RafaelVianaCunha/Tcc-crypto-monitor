@@ -1,4 +1,4 @@
-namespace CryptoMonitor
+namespace CryptoMonitor.Enums
 {
     public enum Exchange
     {
