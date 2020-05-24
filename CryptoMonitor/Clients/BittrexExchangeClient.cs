@@ -30,7 +30,7 @@ namespace CryptoMonitor.Clients
                     .First();
 
                 onNewValue(new Coin
-                {
+                 {
                     Name = symbol,
                     Main = bittexSymbol,
                     Amount = lastPrice,
