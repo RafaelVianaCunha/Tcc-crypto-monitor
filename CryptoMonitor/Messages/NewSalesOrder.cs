@@ -13,6 +13,6 @@ namespace CryptoMonitor.Messages
 
         public decimal Limit { get; set; }
 
-        public double Quantity { get; set; }
+        public decimal Quantity { get; set; }
     }
 }
