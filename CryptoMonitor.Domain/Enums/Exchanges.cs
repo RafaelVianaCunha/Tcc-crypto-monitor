@@ -1,6 +1,6 @@
 namespace CryptoMonitor.Enums
 {
-    public enum Exchange
+    public enum Exchanges
     {
         Binance,
         Bitfinex,

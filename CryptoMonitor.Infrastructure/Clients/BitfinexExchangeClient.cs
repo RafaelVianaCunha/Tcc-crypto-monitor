@@ -1,14 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using Bitfinex.Net;
-using CryptoMonitor.Entities;
+using CryptoMonitor.Domain.Interfaces;
+using CryptoMonitor.Domain.ValueObjects;
 using CryptoMonitor.Enums;
 
-namespace CryptoMonitor.Clients
+namespace CryptoMonitor.Infraestructure.Clients
 {
     public class BitfinexExchangeClient : IExchangeClient
     {
-        public Exchange Exchange => Exchange.Bitfinex;
+        public Exchanges Exchange => Exchanges.Bitfinex;
 
         public BitfinexSocketClient BitfinexSocketClient { get; }
 
@@ -17,15 +18,15 @@ namespace CryptoMonitor.Clients
             BitfinexSocketClient = bitfinexSocketClient;
         }
 
-        public Task ConsumeCoinValue(string symbol, Action<Coin> onNewValue)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue)
         {
             var bitfinexSymbol = "tBTCUSD";
 
             return BitfinexSocketClient.SubscribeToTickerUpdatesAsync(bitfinexSymbol, (data) =>
             {
-                onNewValue(new Coin
+                onNewValue(new OrderBook
                 {
-                    Name = symbol,
+                    Symbol = symbol,
                     Main = bitfinexSymbol,
                     Amount = data.LastPrice,
                     Exchange = Exchange

@@ -1,34 +1,32 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using CryptoMonitor.Domain.Services.Interfaces;
 using CryptoMonitor.Enums;
 
-namespace CryptoMonitor
+namespace CryptoMonitor.Domain.Services
 {
-    public class PriceCalculator
+    public class PriceCalculator : IPriceCalculator
     {
-        public IDictionary<Exchange, decimal> values { get; }
+        public IDictionary<Exchanges, decimal> values { get; }
 
         public PriceCalculator()
         {
-            values = new ConcurrentDictionary<Exchange, decimal>();
+            values = new ConcurrentDictionary<Exchanges, decimal>();
         }
 
-        public decimal CalculateMedianForNewCoinValue(decimal newValue, Exchange exchange)
+        public decimal CalculateMedianForNewCoinValue(decimal amount, Exchanges exchange)
         {
            if (values.TryGetValue(exchange, out _))
             {
-                values[exchange] = newValue;
+                values[exchange] = amount;
             }
             else
             {
-                values.Add(exchange, newValue);
+                values.Add(exchange, amount);
             }
 
             var median = GetMedian(values.Select(v => v.Value).ToList());
-
-            Console.WriteLine("Mediana " + median);
 
             return median;
         }

@@ -2,23 +2,24 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Bittrex.Net;
-using CryptoMonitor.Entities;
+using CryptoMonitor.Domain.Interfaces;
+using CryptoMonitor.Domain.ValueObjects;
 using CryptoMonitor.Enums;
 
-namespace CryptoMonitor.Clients
+namespace CryptoMonitor.Infraestructure.Clients
 {
     public class BittrexExchangeClient : IExchangeClient
     {
         public BittrexSocketClient BittrexSocketClient { get; }
 
-        public Exchange Exchange => Exchange.Bittrex;
+        public Exchanges Exchange => Exchanges.Bittrex;
 
         public BittrexExchangeClient(BittrexSocketClient bittrexSocketClient)
         {
             BittrexSocketClient = bittrexSocketClient;
         }
 
-        public Task ConsumeCoinValue(string symbol, Action<Coin> onNewValue)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue)
         {
             var bittexSymbol = "USD-BTC";
 
@@ -29,9 +30,9 @@ namespace CryptoMonitor.Clients
                     .OrderByDescending(x => x)
                     .First();
 
-                onNewValue(new Coin
+                onNewValue(new OrderBook
                  {
-                    Name = symbol,
+                    Symbol = symbol,
                     Main = bittexSymbol,
                     Amount = lastPrice,
                     Exchange = Exchange

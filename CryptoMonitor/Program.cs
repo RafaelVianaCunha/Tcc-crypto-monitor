@@ -3,17 +3,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using Binance.Net;
 using Newtonsoft.Json;
-using CryptoMonitor.Clients;
 using System.Collections.Generic;
-using IExchangeClient = CryptoMonitor.Clients.IExchangeClient;
-using CryptoMonitor.Services;
-using BinanceExchangeClient = CryptoMonitor.Clients.BinanceExchangeClient;
 using Bittrex.Net;
-using BittrexExchangeClient = CryptoMonitor.Clients.BittrexExchangeClient;
 using Bitfinex.Net;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.Azure.ServiceBus;
+using CryptoMonitor.Domain.Services;
+using CryptoMonitor.Domain.Interfaces;
+using CryptoMonitor.Infraestructure.Queues;
+using CryptoMonitor.Infraestructure.Clients;
+using CryptoMonitor.Infraestructure.Repositories;
 
 namespace CryptoMonitor
 {
@@ -30,21 +30,23 @@ namespace CryptoMonitor
 
             var queueClient = new QueueClient(serviceBusConnectionString, queueName);
 
-            var stopLimitProcessor = new StopLimitProcessor(new List<IExchangeClient>
+            var orderSaleQueueClient = new OrderSaleQueueClient(queueClient);
+
+            var stopLimitOrderService = new StopLimitOrderService(new List<IExchangeClient>
             {
                 new BinanceExchangeClient(new BinanceSocketClient()),
                 new BittrexExchangeClient(new BittrexSocketClient()),
                 new BitfinexExchangeClient(new BitfinexSocketClient())
             },
             new PriceCalculator(),
-            queueClient);
+            new StopLimitRepository(),
+            orderSaleQueueClient);
 
-            await stopLimitProcessor.Process();
+            await stopLimitOrderService.MonitorExchanges();
 
             Console.ReadLine();
 
             Console.ReadKey();
-            Console.WriteLine("Hello World!");
         }
 
         static void GetAppSettingsFile()
