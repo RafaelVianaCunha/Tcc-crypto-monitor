@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using CryptoMonitor.Domain.Entities;
 
 namespace CryptoMonitor.Domain.Services.Interfaces
 {
     public interface IStopLimitOrderService
     {
-        Task MonitorExchanges();
+        Task Monitor(StopLimit stopLimit);
     }
 }

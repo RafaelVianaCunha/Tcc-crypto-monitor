@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CryptoMonitor.Domain.Clients;
 using CryptoMonitor.Domain.Entities;
@@ -20,18 +21,21 @@ namespace CryptoMonitor.Domain.Services
 
         public IOrderSaleQueueClient OrderSaleQueueClient { get; }
 
+        private CancellationTokenSource _tokenSource;
+
         public StopLimitOrderService(IReadOnlyCollection<IExchangeClient> exchangeClients, IPriceCalculator priceCalculator, IStopLimitRepository stopLimitRepository, IOrderSaleQueueClient orderSaleQueueClient)
         {
             ExchangeClients = exchangeClients;
             PriceCalculator = priceCalculator;
             StopLimitRepository = stopLimitRepository;
             OrderSaleQueueClient = orderSaleQueueClient;
+
+            var tokenSource = new CancellationTokenSource();
+            _tokenSource = tokenSource;
         }
 
-        public async Task MonitorExchanges()
+        public async Task Monitor(StopLimit stopLimit)
         {
-            var stopLimit = await StopLimitRepository.Get();   
-
             var consumers = ExchangeClients.Select(c =>
                 c.ConsumeOrderBook("BTC-USD", async (orderBook) =>
                 {
@@ -41,8 +45,8 @@ namespace CryptoMonitor.Domain.Services
                     {
                         await SendNewOrderSale(stopLimit);
                     }
-                })
-            );         
+                }, _tokenSource.Token)
+            );
         }
 
         private async Task SendNewOrderSale(StopLimit stopLimit)
@@ -54,6 +58,8 @@ namespace CryptoMonitor.Domain.Services
             };
 
             await OrderSaleQueueClient.Queue(orderSale);
+
+            _tokenSource.Cancel();
         }
     }
 }   

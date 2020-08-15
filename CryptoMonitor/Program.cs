@@ -42,7 +42,13 @@ namespace CryptoMonitor
             new StopLimitRepository(),
             orderSaleQueueClient);
 
-            await stopLimitOrderService.MonitorExchanges();
+            var stopLimitCreatedQueueName = Configuration.GetSection("StopLimitCreatedQueue").Value;
+            var stopLimitCreatedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitCreatedQueueName);
+            var stopLimitCreatedQueue = new StopLimitCreatedQueueClient(
+                stopLimitCreatedQueueClient,
+                stopLimitOrderService);
+
+            stopLimitCreatedQueue.Consume();
 
             Console.ReadLine();
 

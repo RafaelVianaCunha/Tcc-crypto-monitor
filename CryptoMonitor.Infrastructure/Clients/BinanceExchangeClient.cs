@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Binance.Net;
 using CryptoMonitor.Domain.Interfaces;
@@ -18,11 +19,12 @@ namespace CryptoMonitor.Infraestructure.Clients
             BinanceSocketClient = binanceSocketClient;
         }
 
-        public Task ConsumeOrderBook(string symbol, Action<OrderBook> handler)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> handler, CancellationToken token)
         {
             var binanceSymbol = "BTCUSDT";
 
-            return BinanceSocketClient.SubscribeToSymbolTickerUpdatesAsync(binanceSymbol, (data) =>
+
+            return Task.Run(() => BinanceSocketClient.SubscribeToSymbolTickerUpdatesAsync(binanceSymbol, (data) =>
             {
                 handler(new OrderBook
                 {
@@ -31,7 +33,7 @@ namespace CryptoMonitor.Infraestructure.Clients
                     Amount = data.BestBidPrice,
                     Exchange = Exchange
                 });
-            });
+            }), token);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Bitfinex.Net;
 using CryptoMonitor.Domain.Interfaces;
@@ -18,11 +19,11 @@ namespace CryptoMonitor.Infraestructure.Clients
             BitfinexSocketClient = bitfinexSocketClient;
         }
 
-        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue, CancellationToken token)
         {
             var bitfinexSymbol = "tBTCUSD";
 
-            return BitfinexSocketClient.SubscribeToTickerUpdatesAsync(bitfinexSymbol, (data) =>
+            return Task.Run(() => BitfinexSocketClient.SubscribeToTickerUpdatesAsync(bitfinexSymbol, (data) =>
             {
                 onNewValue(new OrderBook
                 {
@@ -31,7 +32,7 @@ namespace CryptoMonitor.Infraestructure.Clients
                     Amount = data.LastPrice,
                     Exchange = Exchange
                 });
-            });
+            }), token);
         }
     }
 }

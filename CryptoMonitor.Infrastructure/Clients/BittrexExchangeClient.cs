@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Bittrex.Net;
 using CryptoMonitor.Domain.Interfaces;
@@ -19,11 +20,11 @@ namespace CryptoMonitor.Infraestructure.Clients
             BittrexSocketClient = bittrexSocketClient;
         }
 
-        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> onNewValue, CancellationToken token)
         {
             var bittexSymbol = "USD-BTC";
 
-            return BittrexSocketClient.SubscribeToOrderBookUpdatesAsync(bittexSymbol, (data) =>
+            return Task.Run(() => BittrexSocketClient.SubscribeToOrderBookUpdatesAsync(bittexSymbol, (data) =>
             {
                 var lastPrice = data.Buys
                     .Select(s => s.Price)
@@ -37,7 +38,7 @@ namespace CryptoMonitor.Infraestructure.Clients
                     Amount = lastPrice,
                     Exchange = Exchange
                 });
-            });
+            }), token);
         }
     }
 }
