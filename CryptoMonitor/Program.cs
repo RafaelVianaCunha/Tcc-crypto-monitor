@@ -26,7 +26,7 @@ namespace CryptoMonitor
             GetAppSettingsFile(); 
 
             var serviceBusConnectionString = Configuration.GetSection("ServiceBusConnectionString").Value;
-            var queueName = Configuration.GetSection("NewSalesOrderQueue").Value;
+            var queueName = Configuration.GetSection("NewStopLimitOrderSaleQueue").Value;
 
             var queueClient = new QueueClient(serviceBusConnectionString, queueName);
 

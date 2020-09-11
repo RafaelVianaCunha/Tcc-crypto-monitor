@@ -5,6 +5,6 @@ namespace CryptoMonitor.Domain.Services.Interfaces
 {
     public interface IStopLimitOrderService
     {
-        Task Monitor(StopLimit stopLimit);
+        void Monitor(StopLimit stopLimit);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,7 @@ using CryptoMonitor.Domain.Interfaces;
 using CryptoMonitor.Domain.Repositories;
 using CryptoMonitor.Domain.Services.Interfaces;
 using CryptoMonitor.Domain.ValueObjects;
+using Newtonsoft.Json;
 
 namespace CryptoMonitor.Domain.Services
 {
@@ -34,19 +36,24 @@ namespace CryptoMonitor.Domain.Services
             _tokenSource = tokenSource;
         }
 
-        public async Task Monitor(StopLimit stopLimit)
+        public void Monitor(StopLimit stopLimit)
         {
-            var consumers = ExchangeClients.Select(c =>
-                c.ConsumeOrderBook("BTC-USD", async (orderBook) =>
+            Console.WriteLine("chegou aqui");
+            foreach (var exchangeClient in ExchangeClients) 
+            {
+                exchangeClient.ConsumeOrderBook("BTC-USD", async (orderBook) =>
                 {
+                    Console.WriteLine(JsonConvert.SerializeObject(orderBook));
+
                     var median = PriceCalculator.CalculateMedianForNewCoinValue(orderBook.Amount, orderBook.Exchange);
 
                     if (stopLimit.Stop >= median)
                     {
                         await SendNewOrderSale(stopLimit);
+                        _tokenSource.Cancel();
                     }
-                }, _tokenSource.Token)
-            );
+                }, _tokenSource.Token);
+            }
         }
 
         private async Task SendNewOrderSale(StopLimit stopLimit)

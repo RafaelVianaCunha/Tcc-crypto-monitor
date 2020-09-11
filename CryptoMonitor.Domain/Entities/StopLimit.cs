@@ -8,6 +8,6 @@ namespace CryptoMonitor.Domain.Entities
 
         public decimal Stop { get; set; }
 
-        public DateTime DeletedAt { get; set; }
+        public DateTime? DeletedAt { get; set; }
     }
 }

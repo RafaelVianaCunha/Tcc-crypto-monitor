@@ -26,7 +26,8 @@ namespace CryptoMonitor.Infraestructure.Clients
 
             return Task.Run(() => BittrexSocketClient.SubscribeToOrderBookUpdatesAsync(bittexSymbol, (data) =>
             {
-                var lastPrice = data.Buys
+                try {
+                    var lastPrice = data.Buys
                     .Select(s => s.Price)
                     .OrderByDescending(x => x)
                     .First();
@@ -38,6 +39,9 @@ namespace CryptoMonitor.Infraestructure.Clients
                     Amount = lastPrice,
                     Exchange = Exchange
                 });
+                } catch (Exception ex) {
+                    Console.WriteLine(ex);
+                }
             }), token);
         }
     }
