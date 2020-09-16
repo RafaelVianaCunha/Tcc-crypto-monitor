@@ -64,7 +64,15 @@ namespace CryptoMonitor.Domain.Services
                 StopLimit = stopLimit
             };
 
-            await OrderSaleQueueClient.Queue(orderSale);
+            try 
+            {
+                await OrderSaleQueueClient.Queue(orderSale);
+            }
+            catch (Exception ex)
+            {
+                var t = ex;
+            }
+            
 
             _tokenSource.Cancel();
         }

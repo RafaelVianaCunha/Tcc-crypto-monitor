@@ -23,7 +23,6 @@ namespace CryptoMonitor.Infraestructure.Queues
             var newSalesOrderMessage = new Message(Encoding.UTF8.GetBytes(newSalesOrderMessageBody));
             
             await QueueClient.SendAsync(newSalesOrderMessage);
-            await QueueClient.CloseAsync();
         }
     }
 }
