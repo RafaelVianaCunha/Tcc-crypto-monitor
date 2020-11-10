@@ -50,7 +50,7 @@ namespace CryptoMonitor.Domain.Services
                     if (stopLimit.Stop >= median)
                     {
                         await SendNewOrderSale(stopLimit);
-                        _tokenSource.Cancel();
+                        _tokenSource.Dispose();
                     }
                 }, _tokenSource.Token);
             }
