@@ -23,16 +23,26 @@ namespace CryptoMonitor.Infraestructure.Clients
         {
             var bitfinexSymbol = "tBTCUSD";
 
-            return Task.Run(() => BitfinexSocketClient.SubscribeToTickerUpdatesAsync(bitfinexSymbol, (data) =>
+            return Task.Run(() =>
             {
-                onNewValue(new OrderBook
+                try
                 {
-                    Symbol = symbol,
-                    Main = bitfinexSymbol,
-                    Amount = data.LastPrice,
-                    Exchange = Exchange
-                });
-            }), token);
+                    BitfinexSocketClient.SubscribeToTickerUpdatesAsync(bitfinexSymbol, (data) =>
+                    {
+                        onNewValue(new OrderBook
+                        {
+                            Symbol = symbol,
+                            Main = bitfinexSymbol,
+                            Amount = data.LastPrice,
+                            Exchange = Exchange
+                        });
+                    });
+                }
+                catch (System.Exception)
+                {
+
+                }
+            }, token);
         }
     }
 }

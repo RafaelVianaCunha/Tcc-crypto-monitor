@@ -39,8 +39,8 @@ namespace CryptoMonitor.Infraestructure.Clients
                     Amount = lastPrice,
                     Exchange = Exchange
                 });
-                } catch (Exception ex) {
-                    Console.WriteLine(ex);
+                } catch (Exception) {
+                    
                 }
             }), token);
         }

@@ -19,21 +19,31 @@ namespace CryptoMonitor.Infraestructure.Clients
             BinanceSocketClient = binanceSocketClient;
         }
 
-        public Task ConsumeOrderBook(string symbol, Action<OrderBook> handler, CancellationToken token)
+        public async Task ConsumeOrderBook(string symbol, Action<OrderBook> handler, CancellationToken token)
         {
             var binanceSymbol = "BTCUSDT";
 
 
-            return Task.Run(() => BinanceSocketClient.SubscribeToSymbolTickerUpdatesAsync(binanceSymbol, (data) =>
+            await Task.Run(() =>
             {
-                handler(new OrderBook
+                try
                 {
-                    Symbol = symbol,
-                    Main = binanceSymbol,
-                    Amount = data.BestBidPrice,
-                    Exchange = Exchange
-                });
-            }), token);
+                    BinanceSocketClient.SubscribeToSymbolTickerUpdatesAsync(binanceSymbol, (data) =>
+                    {
+                        handler(new OrderBook
+                        {
+                            Symbol = symbol,
+                            Main = binanceSymbol,
+                            Amount = data.BestBidPrice,
+                            Exchange = Exchange
+                        });
+                    });
+                }
+                catch (System.Exception)
+                {
+
+                }
+            }, token);
         }
     }
 }
