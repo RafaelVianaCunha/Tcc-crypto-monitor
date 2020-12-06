@@ -38,21 +38,28 @@ namespace CryptoMonitor.Domain.Services
 
         public void Monitor(StopLimit stopLimit)
         {
-            Console.WriteLine("chegou aqui");
-            foreach (var exchangeClient in ExchangeClients) 
+            try
             {
-                exchangeClient.ConsumeOrderBook("BTC-USD", async (orderBook) =>
+                foreach (var exchangeClient in ExchangeClients)
                 {
-                    Console.WriteLine(JsonConvert.SerializeObject(orderBook));
-
-                    var median = PriceCalculator.CalculateMedianForNewCoinValue(orderBook.Amount, orderBook.Exchange);
-
-                    if (stopLimit.Stop >= median)
+                    exchangeClient.ConsumeOrderBook("BTC-USD", async (orderBook) =>
                     {
-                        await SendNewOrderSale(stopLimit);
-                        _tokenSource.Dispose();
-                    }
-                }, _tokenSource.Token);
+                        var median = PriceCalculator.CalculateMedianForNewCoinValue(orderBook.Amount, orderBook.Exchange);
+
+                        Console.WriteLine(exchangeClient.Exchange + " : " + JsonConvert.SerializeObject(orderBook) + " : Mediana" + median);
+
+                        if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested)
+                        {
+                            Console.WriteLine("Ordem Stop Loss acionada");
+                            await SendNewOrderSale(stopLimit);
+                            _tokenSource.Dispose();
+                        }
+                    }, _tokenSource.Token);
+                }
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
             }
         }
 
@@ -64,7 +71,7 @@ namespace CryptoMonitor.Domain.Services
                 StopLimit = stopLimit
             };
 
-            try 
+            try
             {
                 await OrderSaleQueueClient.Queue(orderSale);
             }
@@ -72,9 +79,9 @@ namespace CryptoMonitor.Domain.Services
             {
                 var t = ex;
             }
-            
+
 
             _tokenSource.Cancel();
         }
     }
-}   
+}
