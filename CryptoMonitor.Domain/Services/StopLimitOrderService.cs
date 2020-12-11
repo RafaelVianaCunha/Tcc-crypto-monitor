@@ -51,8 +51,14 @@ namespace CryptoMonitor.Domain.Services
                         if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested)
                         {
                             Console.WriteLine("Ordem Stop Loss acionada");
-                            await SendNewOrderSale(stopLimit);
-                            _tokenSource.Dispose();
+                            //await SendNewOrderSale(stopLimit);
+
+                            foreach (var t in ExchangeClients)
+                            {
+                                await t.Unsubscribe();
+                            }
+
+                            _tokenSource.Cancel();
                         }
                     }, _tokenSource.Token);
                 }

@@ -45,5 +45,13 @@ namespace CryptoMonitor.Infraestructure.Clients
                 }
             }, token);
         }
+
+        public Task Unsubscribe()
+        {
+            Console.WriteLine("unsubscribing binance");
+            return BinanceSocketClient.UnsubscribeAll();
+        }
     }
+
+    
 }
