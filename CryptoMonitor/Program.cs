@@ -50,8 +50,8 @@ namespace CryptoMonitor
 
             stopLimitCreatedQueue.Consume();
 
-            stopLimitOrderService.Monitor(new Domain.Entities.StopLimit
-            {Stop = 19000});
+            // stopLimitOrderService.Monitor(new Domain.Entities.StopLimit
+            // {Stop = 19000});
 
             Console.ReadLine();
 
