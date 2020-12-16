@@ -25,6 +25,8 @@ namespace CryptoMonitor.Domain.Services
 
         private CancellationTokenSource _tokenSource;
 
+        private static bool _stopLimitExecuted = false;
+
         public StopLimitOrderService(IReadOnlyCollection<IExchangeClient> exchangeClients, IPriceCalculator priceCalculator, IStopLimitRepository stopLimitRepository, IOrderSaleQueueClient orderSaleQueueClient)
         {
             ExchangeClients = exchangeClients;
@@ -48,17 +50,20 @@ namespace CryptoMonitor.Domain.Services
 
                         Console.WriteLine(exchangeClient.Exchange + " : " + JsonConvert.SerializeObject(orderBook) + " : Mediana" + median);
 
-                        if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested)
+                        lock (exchangeClient)
                         {
-                            Console.WriteLine("Ordem Stop Loss acionada");
-                            //await SendNewOrderSale(stopLimit);
-
-                            foreach (var t in ExchangeClients)
+                            if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested && _stopLimitExecuted == false)
                             {
-                                await t.Unsubscribe();
-                            }
+                                _stopLimitExecuted = true;
 
-                            _tokenSource.Cancel();
+                                Console.WriteLine("Ordem Stop Loss acionada");
+                                //await SendNewOrderSale(stopLimit);
+
+                                foreach (var t in ExchangeClients)
+                                {
+                                    t.Unsubscribe().Wait();
+                                }
+                            }
                         }
                     }, _tokenSource.Token);
                 }

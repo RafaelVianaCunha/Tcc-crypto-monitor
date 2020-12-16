@@ -42,7 +42,7 @@ namespace CryptoMonitor.Infraestructure.Clients
                 } catch (Exception) {
                     
                 }
-            }), token);
+            }));
         }
 
         public Task Unsubscribe()
