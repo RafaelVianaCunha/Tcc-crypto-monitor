@@ -50,21 +50,22 @@ namespace CryptoMonitor.Domain.Services
 
                         Console.WriteLine(exchangeClient.Exchange + " : " + JsonConvert.SerializeObject(orderBook) + " : Mediana" + median);
 
-                        lock (exchangeClient)
+                        
+                        if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested && _stopLimitExecuted == false)
                         {
-                            if (stopLimit.Stop >= median && !_tokenSource.IsCancellationRequested && _stopLimitExecuted == false)
+                            _stopLimitExecuted = true;
+
+                            Console.WriteLine("Ordem Stop Loss acionada");
+                            Console.WriteLine("Valor Stop: " + stopLimit.Stop);
+                            Console.WriteLine("Valor Mediana: " + median);
+                            await SendNewOrderSale(stopLimit);
+
+                            foreach (var t in ExchangeClients)
                             {
-                                _stopLimitExecuted = true;
-
-                                Console.WriteLine("Ordem Stop Loss acionada");
-                                //await SendNewOrderSale(stopLimit);
-
-                                foreach (var t in ExchangeClients)
-                                {
-                                    t.Unsubscribe().Wait();
-                                }
+                                t.Unsubscribe().Wait();
                             }
                         }
+                        
                     }, _tokenSource.Token);
                 }
             }
