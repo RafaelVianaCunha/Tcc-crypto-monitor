@@ -40,6 +40,8 @@ namespace CryptoMonitor.Domain.Services
 
         public void Monitor(StopLimit stopLimit)
         {
+            RunningMonitors.Monitors.Add(stopLimit.Id, ExchangeClients.ToList());
+
             try
             {
                 foreach (var exchangeClient in ExchangeClients)
@@ -59,7 +61,7 @@ namespace CryptoMonitor.Domain.Services
                             Console.WriteLine("Valor Stop: " + stopLimit.Stop);
                             Console.WriteLine("Valor Mediana: " + median);
                             await SendNewOrderSale(stopLimit);
-
+                            await StopLimitRepository.Delete(stopLimit);
                             foreach (var t in ExchangeClients)
                             {
                                 t.Unsubscribe().Wait();

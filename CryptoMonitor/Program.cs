@@ -14,6 +14,8 @@ using CryptoMonitor.Domain.Interfaces;
 using CryptoMonitor.Infraestructure.Queues;
 using CryptoMonitor.Infraestructure.Clients;
 using CryptoMonitor.Infraestructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using CryptoMonitor.Infraestructure;
 
 namespace CryptoMonitor
 {
@@ -32,6 +34,15 @@ namespace CryptoMonitor
 
             var orderSaleQueueClient = new OrderSaleQueueClient(queueClient);
 
+            var connectionString = Configuration.GetSection("CryptoOrderDb").Value.ToString();
+
+            var optionsBuilder = new DbContextOptionsBuilder<CryptoMonitorDbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            var cryptoMonitorDb = new CryptoMonitorDbContext(optionsBuilder.Options);
+
+            var stopLimitRepository = new StopLimitRepository(cryptoMonitorDb);
+
             var stopLimitOrderService = new StopLimitOrderService(new List<IExchangeClient>
             {
                 new BinanceExchangeClient(new BinanceSocketClient()),
@@ -39,7 +50,7 @@ namespace CryptoMonitor
                 new BitfinexExchangeClient(new BitfinexSocketClient())
             },
             new PriceCalculator(),
-            new StopLimitRepository(),
+            stopLimitRepository,
             orderSaleQueueClient);
 
             var stopLimitCreatedQueueName = Configuration.GetSection("StopLimitCreatedQueue").Value;
@@ -50,8 +61,20 @@ namespace CryptoMonitor
 
             stopLimitCreatedQueue.Consume();
 
-            // stopLimitOrderService.Monitor(new Domain.Entities.StopLimit
-            // {Stop = 19000});
+            var stopLimitDeletedQueueName = Configuration.GetSection("StopLimitDeletedQueue").Value;
+            var stopLimitDeletedQueueClient = new QueueClient(serviceBusConnectionString, stopLimitDeletedQueueName);
+            var stopLimitDeletedQueue = new StopLimitDeletedQueueClient(
+                stopLimitDeletedQueueClient,
+                stopLimitRepository);
+
+            stopLimitDeletedQueue.Consume();
+
+            var stopLimits = await stopLimitRepository.Get();
+
+            foreach (var stopLimit in stopLimits)
+            {
+                await Task.Run(() => stopLimitOrderService.Monitor(stopLimit));
+            }
 
             Console.ReadLine();
 
