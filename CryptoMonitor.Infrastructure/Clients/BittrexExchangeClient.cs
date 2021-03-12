@@ -42,7 +42,13 @@ namespace CryptoMonitor.Infraestructure.Clients
                 } catch (Exception) {
                     
                 }
-            }), token);
+            }));
+        }
+
+        public Task Unsubscribe()
+        {
+            Console.WriteLine("unsubscribing bittrex");
+            return BittrexSocketClient.UnsubscribeAll();
         }
     }
 }

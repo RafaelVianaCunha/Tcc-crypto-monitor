@@ -42,7 +42,13 @@ namespace CryptoMonitor.Infraestructure.Clients
                 {
 
                 }
-            }, token);
+            });
+        }
+
+        public Task Unsubscribe()
+        {
+            Console.WriteLine("unsubscribing bitfinex");
+            return BitfinexSocketClient.UnsubscribeAll();
         }
     }
 }

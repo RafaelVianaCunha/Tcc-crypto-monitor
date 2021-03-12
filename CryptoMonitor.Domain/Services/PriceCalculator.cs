@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,10 @@ namespace CryptoMonitor.Domain.Services
 
         public decimal GetMedian(IList<decimal> numbers)
         {
+            if(!numbers.ToArray<decimal>().Length.Equals(Enum.GetNames(typeof(Exchanges)).Length)){
+                return numbers.Max();
+            }
+
             int numberCount = numbers.Count();
             int halfIndex = numbers.Count() / 2;
 

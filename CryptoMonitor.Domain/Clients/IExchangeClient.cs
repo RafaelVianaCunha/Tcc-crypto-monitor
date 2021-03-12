@@ -10,5 +10,7 @@ namespace CryptoMonitor.Domain.Interfaces
     {
         Exchanges Exchange { get; }
         Task ConsumeOrderBook(string symbol, Action<OrderBook> action, CancellationToken token);
+
+        Task Unsubscribe();
     }
 }

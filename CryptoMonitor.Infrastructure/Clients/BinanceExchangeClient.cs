@@ -19,12 +19,11 @@ namespace CryptoMonitor.Infraestructure.Clients
             BinanceSocketClient = binanceSocketClient;
         }
 
-        public async Task ConsumeOrderBook(string symbol, Action<OrderBook> handler, CancellationToken token)
+        public Task ConsumeOrderBook(string symbol, Action<OrderBook> handler, CancellationToken token)
         {
             var binanceSymbol = "BTCUSDT";
 
-
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 try
                 {
@@ -43,7 +42,15 @@ namespace CryptoMonitor.Infraestructure.Clients
                 {
 
                 }
-            }, token);
+            });
+        }
+
+        public Task Unsubscribe()
+        {
+            Console.WriteLine("unsubscribing binance");
+            return BinanceSocketClient.UnsubscribeAll();
         }
     }
+
+    
 }
