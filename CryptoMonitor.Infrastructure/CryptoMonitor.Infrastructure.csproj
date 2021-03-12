@@ -13,4 +13,12 @@
       <ProjectReference Include="..\CryptoMonitor.Domain\CryptoMonitor.Domain.csproj" />
   </ItemGroup>
 
+   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
+    <PackageReference Include="SimpleInjector" Version="4.10.2" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="4.10.3" />
+  </ItemGroup>
+
 </Project>
